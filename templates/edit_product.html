@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Product{% endblock %}
+{% block breadcrumb %}Stock / Update{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-9">
+        <div class="card border-0 shadow-lg p-3">
+            <div class="card-header bg-white border-0 pt-4 pb-2">
+                <div class="d-flex align-items-center">
+                    <div class="p-3 bg-indigo bg-opacity-10 text-primary rounded-circle me-3">
+                        <i class="bi bi-pencil-square fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Modify Product: {{ product.name }}</h4>
+                        <p class="text-muted small mb-0">Update item specifications and threshold alerts</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body px-4 pt-4 pb-5">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="text" name="name" class="form-control" id="productName"
+                                    value="{{ product.name }}" required>
+                                <label for="productName"><i class="bi bi-type me-2"></i>Product Name</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating shadow-sm rounded">
+                                <textarea name="description" class="form-control" id="description"
+                                    style="height: 100px">{{ product.description }}</textarea>
+                                <label for="description"><i class="bi bi-chat-left-text me-2"></i>Detailed
+                                    Description</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="text" name="category" class="form-control" id="category"
+                                    value="{{ product.category }}" required>
+                                <label for="category"><i class="bi bi-tag me-2"></i>Category</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating shadow-sm rounded">
+                                <select name="supplier" class="form-select" id="supplierSelect">
+                                    <option value="">Select Vendor...</option>
+                                    {% for supplier in suppliers %}
+                                   <option value="{{ supplier.id }}" {% if product.supplier.id == supplier.id %}selected{% endif %}>{{ supplier.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="supplierSelect"><i class="bi bi-truck me-2"></i>Supply Source</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="number" step="0.01" name="price" class="form-control" id="price"
+                                    value="{{ product.price }}" required>
+                                <label for="price"><i class="bi bi-currency-rupee me-2"></i>Unit Price (₹)</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="number" name="quantity" class="form-control" id="quantity"
+                                    value="{{ product.quantity }}" required>
+                                <label for="quantity"><i class="bi bi-stack me-2"></i>Current Quantity</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="number" name="threshold" class="form-control" id="threshold"
+                                    value="{{ product.threshold }}" required>
+                                <label for="threshold"><i class="bi bi-bell me-2"></i>Low Stock Alert At</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-end mt-5">
+                        <a href="{% url 'product_list' %}" class="btn btn-light px-4 border">Cancel Edit</a>
+                        <button type="submit" class="btn btn-primary px-5 py-2 shadow border-0">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-save me-2"></i> Apply Changes
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

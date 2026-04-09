@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-75">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-lg overflow-hidden">
+            <div class="row g-0">
+                <div class="col-12 p-5">
+                    <div class="text-center mb-5">
+                        <div
+                            class="d-inline-flex align-items-center justify-content-center p-3 bg-primary bg-opacity-10 text-primary rounded-circle mb-3">
+                            <i class="bi bi-box-seam-fill fs-1"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark">Welcome Back</h3>
+                        <p class="text-muted small">Enter your credentials to access Stockify</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-floating shadow-sm rounded mb-4">
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Username"
+                                required>
+                            <label for="username"><i class="bi bi-person me-2"></i>Username</label>
+                        </div>
+                        <div class="form-floating shadow-sm rounded mb-5">
+                            <input type="password" name="password" class="form-control" id="password"
+                                placeholder="Password" required>
+                            <label for="password"><i class="bi bi-lock me-2"></i>Password</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm mb-4">
+                            Log In to Dashboard
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="small text-muted">Don't have an account? <a href="{% url 'register' %}"
+                                class="fw-bold text-primary text-decoration-none">Sign Up Free</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Special hide sidebar for login/register if desired, but we'll just center it in the wrapper */
+    .sidebar {
+        display: none !important;
+    }
+
+    .wrapper {
+        margin-left: 0 !important;
+    }
+
+    .topbar {
+        display: none !important;
+    }
+
+    .content-area {
+        padding-top: 5rem;
+        background: radial-gradient(circle at top right, #eef2ff 0%, #f1f5f9 100%);
+        min-height: 100vh;
+    }
+</style>
+{% endblock %}

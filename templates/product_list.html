@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory{% endblock %}
+{% block breadcrumb %}Stock Management{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Inventory Management</h2>
+        <p class="text-muted small mb-0">Total of {{ products|length }} items in your stock</p>
+    </div>
+    <a href="{% url 'add_product' %}" class="btn btn-primary d-flex align-items-center shadow-sm">
+        <i class="bi bi-plus-lg me-2"></i> Add New Item
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label small fw-bold text-muted text-uppercase">Search Database</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control border-start-0 ps-0"
+                        placeholder="Product name, category..." value="{{ request.GET.q }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch pt-2">
+                    <input class="form-check-input" type="checkbox" name="low_stock" id="lowStockSwitch" {% if request.GET.low_stock %}checked{% endif %}>
+                    <label class="form-check-label fw-semibold" for="lowStockSwitch">Filter Low Stock Only</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-secondary w-100 shadow-sm">Apply Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4">Product Details</th>
+                    <th>Category</th>
+                    <th>Supplier</th>
+                    <th>Price</th>
+                    <th>In Stock</th>
+                    <th>Status</th>
+                    <th class="text-end pe-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td class="ps-4 py-3">
+                        <div class="fw-bold text-dark">{{ product.name }}</div>
+                        <div class="small text-muted">{{ product.description|truncatechars:35 }}</div>
+                    </td>
+                    <td><span class="badge bg-light text-secondary border px-2 py-1 small">{{ product.category }}</span>
+                    </td>
+                    <td><span class="text-muted small">{{ product.supplier.name|default:"Unassigned" }}</span></td>
+                    <td class="fw-semibold">₹{{ product.price }}</td>
+                    <td class="fw-bold">{{ product.quantity }}</td>
+                    <td>
+                        {% if product.quantity == 0 %}
+                        <span
+                            class="badge rounded-pill bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3">Critical</span>
+                        {% elif product.quantity < product.threshold %} <span
+                            class="badge rounded-pill bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 text-dark">
+                            Low Stock</span>
+                            {% else %}
+                            <span
+                                class="badge rounded-pill bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3">Healthy</span>
+                            {% endif %}
+                    </td>
+                    <td class="text-end pe-4">
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm rounded-circle p-0" style="width: 32px; height: 32px;"
+                                type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <li><a class="dropdown-item py-2" href="{% url 'edit_product' product.pk %}"><i
+                                            class="bi bi-pencil me-2 text-primary"></i>Edit Item</a></li>
+                                <li><a class="dropdown-item py-2 text-danger" href="#"
+                                        onclick="if(confirm('Delete {{ product.name }}?')) window.location.href='{% url 'delete_product' product.pk %}'"><i
+                                            class="bi bi-trash me-2"></i>Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-5">
+                        <div class="text-muted mb-3">
+                            <i class="bi bi-inbox fs-1"></i>
+                        </div>
+                        <h6 class="text-muted fw-bold">No products found</h6>
+                        <p class="small text-muted mb-3">Try adjusting your filters or search query</p>
+                        <a href="{% url 'add_product' %}" class="btn btn-sm btn-primary">Add Product</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

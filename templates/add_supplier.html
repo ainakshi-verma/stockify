@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Supplier{% endblock %}
+{% block breadcrumb %}Partners / Register{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-xl-9">
+        <div class="card border-0 shadow-lg p-3">
+            <div class="card-header bg-white border-0 pt-4 pb-2">
+                <div class="d-flex align-items-center">
+                    <div class="p-3 bg-success bg-opacity-10 text-success rounded-circle me-3">
+                        <i class="bi bi-truck fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Supplier Registration</h4>
+                        <p class="text-muted small mb-0">Onboard a new supply chain partner</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body px-4 pt-4 pb-5">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-floating shadow-sm rounded mb-4">
+                        <input type="text" name="name" class="form-control" id="supplierName"
+                            placeholder="Supplier Name" required>
+                        <label for="supplierName"><i class="bi bi-building me-2"></i>Company Legal Name</label>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="text" name="contact" class="form-control" id="contact"
+                                    placeholder="Contact" required>
+                                <label for="contact"><i class="bi bi-telephone me-2"></i>Contact Phone</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating shadow-sm rounded">
+                                <input type="email" name="email" class="form-control" id="email" placeholder="Email"
+                                    required>
+                                <label for="email"><i class="bi bi-envelope me-2"></i>Business Email</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating shadow-sm rounded mb-4">
+                        <textarea name="address" class="form-control" id="address" placeholder="Address"
+                            style="height: 120px" required></textarea>
+                        <label for="address"><i class="bi bi-geo-alt me-2"></i>Physical Operations Hub</label>
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-end mt-5">
+                        <a href="{% url 'supplier_list' %}" class="btn btn-light px-4 border">Discard</a>
+                        <button type="submit" class="btn btn-primary px-5 py-2 shadow border-0">
+                            <span class="d-flex align-items-center">
+                                <i class="bi bi-check-circle me-2"></i> Save Partner Profile
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

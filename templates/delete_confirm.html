@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Deletion{% endblock %}
+{% block breadcrumb %}Stock / Removal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-lg overflow-hidden text-center p-5">
+            <div
+                class="d-inline-flex align-items-center justify-content-center p-4 bg-danger bg-opacity-10 text-danger rounded-circle mx-auto mb-4">
+                <i class="bi bi-trash-fill fs-1"></i>
+            </div>
+
+            <h3 class="fw-bold text-dark mb-3">Permanent Deletion?</h3>
+            <p class="text-muted mb-5 px-md-4">
+                You are about to remove <strong>{{ product.name }}</strong> from your active inventory.
+                All transaction history associated with this product ID will be archived. This action cannot be undone.
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-3">
+                    <button type="submit" class="btn btn-danger py-3 fw-bold shadow-sm">
+                        <i class="bi bi-trash3 me-2"></i> Confirm and Delete
+                    </button>
+                    <a href="{% url 'product_list' %}" class="btn btn-light py-3 border">
+                        Abort and Go Back
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

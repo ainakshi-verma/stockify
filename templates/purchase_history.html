@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Purchase History{% endblock %}
+{% block breadcrumb %}Transactions / Purchases{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Purchase Transaction Logs</h2>
+        <p class="text-muted small mb-0">Comprehensive record of stock replenishment</p>
+    </div>
+    <a href="{% url 'record_purchase' %}" class="btn btn-success d-flex align-items-center shadow-sm">
+        <i class="bi bi-cart-plus me-2"></i> Record Purchase
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th class="ps-4">Order ID</th>
+                    <th>Arrival Date</th>
+                    <th>Product Details</th>
+                    <th>Quantity Received</th>
+                    <th class="text-end pe-4">Fulfillment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in purchases %}
+                <tr>
+                    <td class="ps-4 py-3"><code
+                            class="text-success small">#PUR-{{ purchase.id|stringformat:"03d" }}</code></td>
+                    <td class="small text-muted">{{ purchase.date|date:"d M Y, h:i A" }}</td>
+                    <td class="fw-semibold">{{ purchase.product.name }}</td>
+                    <td class="fw-bold text-success">{{ purchase.quantity_added }}</td>
+                    <td class="text-end pe-4"><span
+                            class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-10 px-2 py-1">Stocked</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">No purchase records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
